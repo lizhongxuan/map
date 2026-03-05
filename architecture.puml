@@ -1,0 +1,82 @@
+@startuml
+!theme plain
+
+title 可进化多 Agent 平台架构图
+left to right direction
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+skinparam ArrowThickness 1
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam shadowing false
+
+actor 用户 as User
+
+
+package "控制平面" as CTRL #EEF7FF {
+  component "小龙虾助手" as LOB
+  component "多Agent群聊" as DISC
+  component "解决方案" as DESI
+}
+
+package "执行平面" as EXEC #F4FFF2 {
+  component "工作室" as ROOM
+  component "执行Agents" as RUN
+  component "职级权限" as MANAGER
+  component "本地经验库" as EXP
+  component "本地Skills库" as SKILL
+  component "Skill 生成" as SGEN
+}
+
+
+
+
+cloud "Cloud" as CLOUD {
+  component "云社区经验库" as CEXP
+  component "云社区Skills商店" as CSKILL
+}
+
+' -------- 布局锚点（隐藏线） --------
+CTRL -[hidden]right- EXEC
+EXEC -[hidden]right- CLOUD
+EXP -[hidden]down- SKILL
+SKILL -[hidden]down- SGEN
+
+
+
+' -------- 主链路 --------
+User --> LOB : 命令
+
+
+MANAGER --> RUN : 管理
+RUN -right-> SKILL : 工具执行
+RUN -right-> EXP : 查看优秀实践
+
+
+' -------- 小龙虾助手支路 --------
+User -down-> DISC : 组织
+LOB -down-> ROOM : 创建
+ROOM --> RUN : 分配工作
+
+DISC -down-> DESI : 决策
+
+
+
+
+SGEN -up-> SKILL : 发布
+
+' -------- 云端同步 --------
+EXP -right-> CEXP : 经验同步
+SKILL -right-> CSKILL : 技能同步
+
+
+note left of LOB
+小龙虾助手负责:
+1) 管理 Agent
+2) 分配任务
+3) 评分考核
+4) 生成新 Agent
+5) 组织群聊
+end note
+
+@enduml
