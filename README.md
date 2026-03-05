@@ -11,7 +11,6 @@
 ## 文档
 - 设计方案：`design.md`
 - 架构总览图：`architecture.puml`
-- 架构详细图：`architecture_detail.puml`
 
 ## 如何查看架构图
 如果本机已安装 PlantUML，可执行：
